@@ -1,7 +1,4 @@
 import './App.css';
-// import React, { useState } from 'react';
-import Chat from './Chat.js'
-import ChatList from './ChatList.js'
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 
@@ -13,16 +10,10 @@ const theme = createTheme({
 
 
 function App() {
-  // const [chatList, setChatList] = useState([]);
-    
-  // React.useEffect(() => {
-     
-  // }, [chatList]);
   return (
     <ThemeProvider theme={theme}>
-      <div className='chats'>
-        <ChatList />
-        <Chat />
+      <div>
+        Home
       </div>
     </ThemeProvider>
   );

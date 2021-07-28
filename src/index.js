@@ -1,15 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom'
-import './index.css';
+import { Provider } from 'react-redux'
 import reportWebVitals from './reportWebVitals';
-import Router from './router/router'
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import blue from '@material-ui/core/colors/blue';
+import { store } from './store/store'
+import './index.css';
+import App from './App'
+
+const theme = createTheme({
+  palette: {
+    primary: blue
+  }
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Router />
-    </BrowserRouter>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

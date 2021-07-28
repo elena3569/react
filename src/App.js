@@ -1,21 +1,10 @@
+import Router from './router/router'
 import './App.css';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-import blue from '@material-ui/core/colors/blue';
-
-const theme = createTheme({
-  palette: {
-    primary: blue
-  }
-});
-
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <div>
-        Home
-      </div>
-    </ThemeProvider>
+      <Router /> 
+      
   );
 }
 export default App;

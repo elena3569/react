@@ -9,9 +9,8 @@ function Profile() {
     const dispatch = useDispatch();
 
     const handleChange = useCallback(() => {
-        console.log(label);
         dispatch(toggleChecked(isChecked));
-    }, [dispatch])
+    }, [dispatch, isChecked])
 
     return <div> 
         <span> Profile </span>

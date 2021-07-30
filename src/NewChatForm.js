@@ -1,5 +1,9 @@
-import React from 'react';
-import clsx from 'clsx';
+import React, { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+// import { Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router'
+import { addChat } from './store/actions/chats'
+// import clsx from 'clsx';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -11,9 +15,9 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import ListItemText from '@material-ui/core/ListItemText';
+// import ListItemText from '@material-ui/core/ListItemText';
 import Select from '@material-ui/core/Select';
-import Checkbox from '@material-ui/core/Checkbox';
+// import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
 
 const useStyles = makeStyles((theme) => ({
@@ -70,15 +74,18 @@ function getStyles(name, personName, theme) {
           : theme.typography.fontWeightMedium,
     };
   }
-
-const NewChatForm = () => {
+ 
+function NewChatForm () {
+  const { chats } = useSelector(state => state.chats);
+  const dispatch = useDispatch();
+  const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState('');
-  const [newChat, setNewChat] = React.useState({});
 
   const classes = useStyles();
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
+  const [onAdd, setOnAdd] = React.useState(false)
 
   const handleTitle = (e) => {
     setTitle(e.target.value)
@@ -87,7 +94,6 @@ const NewChatForm = () => {
   const handleChange = (e) => {
     setPersonName(e.target.value);
   };
-
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -99,14 +105,22 @@ const NewChatForm = () => {
     setOpen(false);
   };
 
-  const handleSave = (e) => {
+  const handleSave = useCallback((e) => {
     e.preventDefault();
-    setNewChat({id: title, name: title, participants: personName});
+    dispatch(addChat(title));
     setTitle('');
     setPersonName([]);
-    //сохранение в стор
-    setOpen(false);
-  };
+    handleClose();
+    setOnAdd(true);
+  }, [dispatch, title]); 
+  
+  React.useEffect(() => {
+    if (onAdd) {
+      history.push(`/chats/${chats[chats.length-1].id}`)
+    }
+    setOnAdd(false);
+  }, [chats, history, onAdd])
+
 
   return (
     <div>

@@ -1,5 +1,6 @@
 import { combineReducers, createStore, compose, applyMiddleware } from 'redux'
 import createSagaMiddleware from 'redux-saga'
+import { composeWithDevTools } from 'redux-devtools-extension';
 import profileReducer from './reducers/profile'
 import chatsReducer from './reducers/chats'
 import {chatWatcher} from './sagas'
@@ -11,13 +12,12 @@ const rootReducer = combineReducers({
     chats: chatsReducer,
 })
 
-    const composeEnchancers = window.__REDUX_DEVTOOLS_EXTENSION__ || compose 
-    
-    export const store = createStore(
-        rootReducer,
-        // applyMiddleware(sagaMiddleware),
-        // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-    composeEnchancers(applyMiddleware(sagaMiddleware))
+export const store = createStore(
+    rootReducer,
+    compose(
+        applyMiddleware(sagaMiddleware),
+        composeWithDevTools()
+    )
 )
 
 sagaMiddleware.run(chatWatcher)

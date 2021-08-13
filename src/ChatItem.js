@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField'
 // import usePrevious from './hooks/usePrevious'
 import { useParams } from 'react-router'
-import { addMessage, robotResponse } from './store/actions/chats'
+import { addMessage } from './store/actions/chats'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,7 +28,6 @@ function ChatItem () {
     const params = useParams();
     const classes = useStyles();
     const [message, setMessage] = useState('');
-    // const timer = React.useRef(null)
     const input = React.createRef();
     
     const chat = useMemo(()=> {
@@ -39,10 +38,10 @@ function ChatItem () {
       setMessage(e.target.value);
     };
     const handleMessageList = useCallback(() => {
-      const botResponse = {autor: 'bot', text: 'Message sent'};
-      dispatch(addMessage(params.chatId, {autor:'me', text: message}))
+      if (message) {
+        dispatch(addMessage(params.chatId, {autor:'me', text: message}))
+      }
       setMessage('');
-      dispatch(robotResponse(params.chatId, botResponse ))
       input.current.focus();
     }, [dispatch, params.chatId, message, input])
 

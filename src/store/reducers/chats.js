@@ -1,4 +1,4 @@
-import { ADD_MESSAGE, ADD_CHAT, DELETE_CHAT} from '../actions/chats'
+import { ADD_MESSAGE_SAGA, ADD_CHAT, DELETE_CHAT} from '../actions/chats'
 
 const initialState = {chats: [
     {id: 'chat1Chosen', name: 'Chosen', messageList: [{autor: 'me', text: 'hi'}, {autor: 'bot', text: 'send message'}] }, 
@@ -7,7 +7,7 @@ const initialState = {chats: [
 
 export default function reduser(state = initialState, action) {
     switch (action.type){
-        case ADD_MESSAGE: {
+        case ADD_MESSAGE_SAGA: {
             return {
                 ...state,
                 chats: state.chats.map(chat => {

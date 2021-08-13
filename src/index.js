@@ -5,9 +5,11 @@ import { Provider } from 'react-redux'
 import reportWebVitals from './reportWebVitals';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
-import { store } from './store/store'
+import { persistor, store } from './store/store'
 import './index.css';
-import App from './App'
+import App from './components/App/App'
+import { PersistGate } from 'redux-persist/integration/react'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const theme = createTheme({
   palette: {
@@ -18,11 +20,13 @@ const theme = createTheme({
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ThemeProvider>
+      <PersistGate persistor={persistor} losding={<CircularProgress />}>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ThemeProvider>
+      </PersistGate>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

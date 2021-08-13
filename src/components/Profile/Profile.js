@@ -1,7 +1,7 @@
 import { Checkbox, FormControlLabel } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { useCallback } from 'react'
-import { toggleChecked } from './store/actions/profile'
+import { toggleChecked } from '../../store/actions/profile'
 
 function Profile() {
 

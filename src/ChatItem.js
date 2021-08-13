@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField'
 // import usePrevious from './hooks/usePrevious'
 import { useParams } from 'react-router'
-import { addMessage } from './store/actions/chats'
+import { addMessage, robotResponse } from './store/actions/chats'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,7 +28,7 @@ function ChatItem () {
     const params = useParams();
     const classes = useStyles();
     const [message, setMessage] = useState('');
-    const timer = React.useRef(null)
+    // const timer = React.useRef(null)
     const input = React.createRef();
     
     const chat = useMemo(()=> {
@@ -39,28 +39,29 @@ function ChatItem () {
       setMessage(e.target.value);
     };
     const handleMessageList = useCallback(() => {
+      const botResponse = {autor: 'bot', text: 'Message sent'};
       dispatch(addMessage(params.chatId, {autor:'me', text: message}))
       setMessage('');
+      dispatch(robotResponse(params.chatId, botResponse ))
       input.current.focus();
     }, [dispatch, params.chatId, message, input])
 
-    React.useEffect(() => {
+    // React.useEffect(() => {
       
-      const robotResponse = {autor: 'robot', text: 'Message sent'};
-      if (chat?.messageList.length && chat.messageList[chat.messageList.length-1]?.autor !== 'robot')
-      //  && prevMessageList?.length < chat.messageList.length
-      {
-        timer.current = setTimeout(() => {
-          dispatch(addMessage(params.chatId, robotResponse))
-        }, 1500)
-      }
-    }, [chat?.messageList, dispatch, params.chatId, message]);
+    //   if (chat?.messageList.length && chat.messageList[chat.messageList.length-1]?.autor !== 'robot')
+    //   //  && prevMessageList?.length < chat.messageList.length
+    //   {
+    //     timer.current = setTimeout(() => {
+    //       dispatch(addMessage(params.chatId, robotResponse))
+    //     }, 1500)
+    //   }
+    // }, [chat?.messageList, dispatch, params.chatId, message]);
     
-    React.useEffect(()=>{
-      return () => {
-        clearTimeout(timer.current)
-      }
-    }, [])
+    // React.useEffect(()=>{
+    //   return () => {
+    //     clearTimeout(timer.current)
+    //   }
+    // }, [])
     
     return (
       <>

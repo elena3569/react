@@ -1,13 +1,24 @@
-import { ADD_MESSAGE, ADD_CHAT, DELETE_CHAT } from '../actions/chats'
+import { ADD_MESSAGE, ADD_CHAT, DELETE_CHAT, ROBOT_RESPONSE } from '../actions/chats'
 
 const initialState = {chats: [
-    {id: 'chat1Chosen', name: 'Chosen', messageList: [{autor: 'me', text: 'hi'}, {autor: 'robot', text: 'send message'}] }, 
-    {id: 'chat2Fiends', name: 'Friends', messageList: [{autor: 'me', text: 'hello'}, {autor: 'robot', text: 'send message'}]}
+    {id: 'chat1Chosen', name: 'Chosen', messageList: [{autor: 'me', text: 'hi'}, {autor: 'bot', text: 'send message'}] }, 
+    {id: 'chat2Fiends', name: 'Friends', messageList: [{autor: 'me', text: 'hello'}, {autor: 'bot', text: 'send message'}]}
 ]}
 
 export default function reduser(state = initialState, action) {
     switch (action.type){
         case ADD_MESSAGE: {
+            return {
+                ...state,
+                chats: state.chats.map(chat => {
+                    if (chat.id === action.payload.chatId) {
+                        chat.messageList.push(action.payload.value)
+                    }
+                    return chat
+                })
+            }
+        }
+        case ROBOT_RESPONSE: {
             return {
                 ...state,
                 chats: state.chats.map(chat => {

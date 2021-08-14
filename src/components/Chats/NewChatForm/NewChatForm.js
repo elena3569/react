@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 // import { Redirect } from 'react-router-dom'
 import { useHistory } from 'react-router'
-import { addChat } from './store/actions/chats'
+import { addChat } from '../../../store/actions/chats'
 // import clsx from 'clsx';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';

@@ -1,17 +1,17 @@
-import { TOGGLE_CHECKED } from '../actions/profile'
+import { IS_ONLINE } from '../actions/profile'
 
 const initialState = {
     isChecked: true,
-    label: 'true'
+    label: 'user is online'
 }
 
 export default function reduser(state = initialState, action) {
     switch (action.type){
-        case TOGGLE_CHECKED: {
+        case IS_ONLINE: {
             return {
                 ...state,
-                isChecked: !state.isChecked,
-                label: String(!state.isChecked),
+                isChecked: action.payload.isChecked,
+                label: action.payload.label,
             }
         }
         default:

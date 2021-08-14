@@ -1,4 +1,3 @@
-import './Message.sass'
 import React from 'react';
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
@@ -9,14 +8,32 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { deleteChat } from './store/actions/chats'
-import NewChatForm from './NewChatForm'
+import { deleteChat } from '../../../store/actions/chats'
+import NewChatForm from '../NewChatForm/NewChatForm'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
-    maxWidth: 250,
+    maxWidth: '30%',
+    position: 'absolute',
+    top: '50px',
+    left: 0,
     backgroundColor: theme.palette.background.paper,
+  },
+  item: {
+    backgroundColor: 'rgba(33, 150, 243, 0.4)',
+    padding: '5px',
+    paddingRight: 0,
+    margin: '5px',
+    borderRadius: '5px',
+    justifyContent: 'space-around'
+  },
+  blacklabel: {
+    color: 'black',
+    textDecoration: 'none',
+    fontWeight: '500',
+  },
+  label: {
+    color: 'white',
   },
 }));
 function ChatList () {
@@ -36,17 +53,17 @@ function ChatList () {
 
     return (
         <div className={classes.root}>
-          <List>
+          <List >
             <ListItem button key='newChat'>
               <NewChatForm />
             </ListItem> 
             {chats?.map((chat) => (
-              <ListItem button key={chat.id}>
-                <Link key={chat.id} to={`/chats/${chat.id}`}>
+              <ListItem className={classes.item} button key={chat.id}>
+                <Link  className={classes.blacklabel} key={chat.id} to={`/chats/${chat.id}`}>
                     <ListItemText primary={chat.name} />  
                 </Link>
                 <Button key={`btn${chat.id}`} id={chat.id} onClick={handleDelete}>
-                  <DeleteIcon />
+                  <DeleteIcon className={classes.label} />
                 </Button>
               </ListItem> 
             ))}

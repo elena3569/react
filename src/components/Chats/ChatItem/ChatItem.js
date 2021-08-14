@@ -1,25 +1,34 @@
-import './Message.sass'
+import './ChatItem.sass'
 import React, { useState, useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField'
-// import usePrevious from './hooks/usePrevious'
 import { useParams } from 'react-router'
-import { addMessage } from './store/actions/chats'
+import { addMessage } from '../../../store/actions/chats'
+import SendRoundedIcon from '@material-ui/icons/SendRounded';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
       margin: theme.spacing(1),
-      width: '25ch',
+      width: '400px',
     },
     '& .MuiTextField-root': {
       margin: theme.spacing(1),
-      width: '25ch',
+      width: '400px',
     },
+   
   },
+  btn: {
+    backgroundColor: 'white',
+    boxShadow: 'none'
+  },
+  labelBtn: {
+    color: '#2196f3',
+    fontSize: '50px',
+  }
 }));
 
 function ChatItem () {
@@ -28,7 +37,6 @@ function ChatItem () {
     const params = useParams();
     const classes = useStyles();
     const [message, setMessage] = useState('');
-    const timer = React.useRef(null)
     const input = React.createRef();
     
     const chat = useMemo(()=> {
@@ -39,38 +47,23 @@ function ChatItem () {
       setMessage(e.target.value);
     };
     const handleMessageList = useCallback(() => {
-      dispatch(addMessage(params.chatId, {autor:'me', text: message}))
+      if (message) {
+        dispatch(addMessage(params.chatId, {autor:'me', text: message}))
+      }
       setMessage('');
       input.current.focus();
     }, [dispatch, params.chatId, message, input])
-
-    React.useEffect(() => {
-      
-      const robotResponse = {autor: 'robot', text: 'Message sent'};
-      if (chat?.messageList.length && chat.messageList[chat.messageList.length-1]?.autor !== 'robot')
-      //  && prevMessageList?.length < chat.messageList.length
-      {
-        timer.current = setTimeout(() => {
-          dispatch(addMessage(params.chatId, robotResponse))
-        }, 1500)
-      }
-    }, [chat?.messageList, dispatch, params.chatId, message]);
-    
-    React.useEffect(()=>{
-      return () => {
-        clearTimeout(timer.current)
-      }
-    }, [])
     
     return (
       <>
         {params.chatId ? 
-          <div className={classes.root}>
+          <div className={`${classes.root} chatItem`}>
                 {chat?.messageList.map((message, index) => 
-                <div key={index}>{message.autor}:{message.text}</div>) }
+                <div key={index}>{message.autor}: {message.text}</div>) }
               
                 <div className='form'>
                 <TextField
+                  className='input'
                   inputRef = {input}
                   multiline
                   required
@@ -78,8 +71,8 @@ function ChatItem () {
                   autoFocus 
                   value={message} 
                   onChange={handleMessage}/>
-                <Button type='submit' variant='contained' color='primary' 
-                  onClick={handleMessageList}>send</Button>
+                <Button className={classes.btn} type='submit' variant='contained' color='primary' 
+                  onClick={handleMessageList}><SendRoundedIcon className={classes.labelBtn} /></Button>
               </div>
           </div>
          : <Redirect to='/chats' />}

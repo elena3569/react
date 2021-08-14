@@ -1,4 +1,4 @@
-// import './App.css';
+import './Chats.sass';
 import React from 'react';
 import ChatItem from './ChatItem/ChatItem.js'
 import ChatList from './ChatList/ChatList.js'

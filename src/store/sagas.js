@@ -1,5 +1,6 @@
 import { put, takeEvery } from 'redux-saga/effects'
 import { ADD_MESSAGE, ADD_MESSAGE_SAGA } from './actions/chats'
+import { IS_ONLINE, TOGGLE_CHECKED } from './actions/profile'
 
 const delay =(ms) => new Promise(res => setTimeout(res, ms))
 
@@ -9,8 +10,20 @@ function* addMessageWorker(action) {
     yield put({ type: ADD_MESSAGE_SAGA, payload: {chatId: action.payload.chatId, value: {autor: 'bot', text: 'message sent'}}})
 }
 
+function* toggleChecked (action) {
+    let label = ''
+    if (!action.payload) {
+        label = 'user is online'
+    }
+    else {
+        label = 'user is offline'
+    }
+    yield put({ type: IS_ONLINE, payload: { isChecked: !action.payload, label} })
+}
+
 export function* chatWatcher() {
     yield takeEvery(ADD_MESSAGE, addMessageWorker)
+    yield takeEvery(TOGGLE_CHECKED, toggleChecked)
 }
 
 export default chatWatcher;

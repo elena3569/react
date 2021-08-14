@@ -28,11 +28,6 @@
   color: #61dafb;
 }
 
-.chats {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 @keyframes App-logo-spin {
   from {

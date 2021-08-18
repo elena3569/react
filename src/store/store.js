@@ -5,6 +5,7 @@ import storage from 'redux-persist/lib/storage'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import profileReducer from './reducers/profile'
 import chatsReducer from './reducers/chats'
+import postsReducer from './reducers/posts'
 import {chatWatcher} from './sagas'
 
 const persistConfig = {
@@ -17,6 +18,7 @@ const sagaMiddleware = createSagaMiddleware()
 const rootReducer = combineReducers({
     profile: profileReducer,
     chats: chatsReducer,
+    posts: postsReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

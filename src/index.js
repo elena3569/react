@@ -10,6 +10,7 @@ import './index.css';
 import App from './components/App/App'
 import { PersistGate } from 'redux-persist/integration/react'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import './firebase'
 
 const theme = createTheme({
   palette: {

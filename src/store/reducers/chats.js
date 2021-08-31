@@ -1,32 +1,36 @@
-import { ADD_MESSAGE_SAGA, ADD_CHAT, DELETE_CHAT} from '../actions/chats'
+import { ADD_MESSAGE_TO_STORE, ADD_CHAT, DELETE_CHAT} from '../actions/chats'
 
-const initialState = {chats: [
-    {id: 'chat1Chosen', name: 'Chosen', messageList: [{autor: 'me', text: 'hi'}, {autor: 'bot', text: 'send message'}] }, 
-    {id: 'chat2Fiends', name: 'Friends', messageList: [{autor: 'me', text: 'hello'}, {autor: 'bot', text: 'send message'}]}
-]}
+const initialState = {chats: []}
 
 export default function reduser(state = initialState, action) {
     switch (action.type){
-        case ADD_MESSAGE_SAGA: {
+        case ADD_MESSAGE_TO_STORE: {
             return {
                 ...state,
                 chats: state.chats.map(chat => {
                     if (chat.id === action.payload.chatId) {
-                        chat.messageList.push(action.payload.value)
+                        const findMes = chat.messageList.find(mes => mes.id === action.payload.mesId)
+                        if (!findMes) {
+                            chat.messageList.push({id: action.payload.mesId, autor: action.payload.value.autor, text: action.payload.value.text})
+                        } 
                     }
                     return chat
                 })
             }
         }
         case ADD_CHAT: {
-            return {
+            const findChat = state.chats.find(chat => chat.id === action.payload.chatId)
+            if (!findChat) { 
+                return {
                 ...state,
                 chats: [...state.chats, {
-                    id: `chat${state.chats.length}${action.payload.chatName}`, 
+                    id: action.payload.chatId, 
                     name: action.payload.chatName, 
                     messageList:[]
                 }]
+                }
             }
+           return state
         }
         case DELETE_CHAT: {
             const findChat = state.chats.find(chat => chat.id === action.payload.chatId)

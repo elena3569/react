@@ -1,12 +1,13 @@
 import './ChatItem.sass'
-import React, { useState, useMemo, useCallback } from 'react';
+import firebase from 'firebase'
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField'
 import { useParams } from 'react-router'
-import { addMessage } from '../../../store/actions/chats'
+import { addMessage, addMessagetoStore } from '../../../store/actions/chats'
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +39,28 @@ function ChatItem () {
     const classes = useStyles();
     const [message, setMessage] = useState('');
     const input = React.createRef();
+
+    
+    useEffect(() => {
+      if (params.chatId) {
+        firebase
+        .database()
+        .ref('messages')
+        .child(params.chatId)
+        .on('child_added', (snapshot) => {
+          dispatch(addMessagetoStore(params.chatId, snapshot.val(), snapshot.key))
+        })
+        
+        // firebase
+        // .database()
+        //     .ref('messages')
+        //     .child(params.chatId)
+        //     .on('child_changed', (snapshot) => {
+        //   dispatch(addMessagetoStore(params.chatId, snapshot.val(), snapshot.key))
+        // })
+
+      }
+    }, [params.chatId])
     
     const chat = useMemo(()=> {
       return chats.find(chat => chat.id === params.chatId)
@@ -48,6 +71,7 @@ function ChatItem () {
     };
     const handleMessageList = useCallback(() => {
       if (message) {
+        // firebase.database().ref('messages').child(params.chatId).push({autor:'me', text: message})
         dispatch(addMessage(params.chatId, {autor:'me', text: message}))
       }
       setMessage('');
@@ -59,7 +83,7 @@ function ChatItem () {
         {params.chatId ? 
           <div className={`${classes.root} chatItem`}>
                 {chat?.messageList.map((message, index) => 
-                <div key={index}>{message.autor}: {message.text}</div>) }
+                <div key={message.id}>{message.autor}: {message.text}</div>) }
               
                 <div className='form'>
                 <TextField

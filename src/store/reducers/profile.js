@@ -1,8 +1,12 @@
-import { IS_ONLINE } from '../actions/profile'
+import { IS_ONLINE, SET_AGE, SET_NAME, CHANGE_IS_AUTHED, SET_EMAIL } from '../actions/profile'
 
 const initialState = {
-    isChecked: true,
-    label: 'user is online'
+    label: 'user is online',
+    isAuthed: false,
+    isOnline: false,
+    email: '',
+    name: '',
+    age: ''
 }
 
 export default function reduser(state = initialState, action) {
@@ -10,8 +14,33 @@ export default function reduser(state = initialState, action) {
         case IS_ONLINE: {
             return {
                 ...state,
-                isChecked: action.payload.isChecked,
+                isOnline: action.payload.isOnline,
                 label: action.payload.label,
+            }
+        }
+        case SET_NAME: {
+            return {
+                ...state,
+                name: action.payload
+            }
+        }
+        case SET_AGE: {
+            return {
+                ...state,
+                age: action.payload
+            }
+        }
+        case SET_EMAIL: {
+            return {
+                ...state,
+                age: action.payload
+            }
+        }
+        case CHANGE_IS_AUTHED: {
+            return {
+                ...state,
+                isOnline: true, 
+                isAuthed: action.payload,
             }
         }
         default:

@@ -11,6 +11,7 @@ import {chatWatcher} from './sagas'
 const persistConfig = {
     key: 'root',
     storage,
+    blacklist: 'chats'
 }
 
 const sagaMiddleware = createSagaMiddleware()

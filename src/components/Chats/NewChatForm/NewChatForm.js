@@ -1,9 +1,7 @@
 import React, { useCallback } from 'react';
+import {addChatToDB} from '../../../store/actions/chats'
 import { useSelector, useDispatch } from 'react-redux'
-// import { Redirect } from 'react-router-dom'
 import { useHistory } from 'react-router'
-import { addChat } from '../../../store/actions/chats'
-// import clsx from 'clsx';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -15,9 +13,7 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-// import ListItemText from '@material-ui/core/ListItemText';
 import Select from '@material-ui/core/Select';
-// import Checkbox from '@material-ui/core/Checkbox';
 import Chip from '@material-ui/core/Chip';
 
 const useStyles = makeStyles((theme) => ({
@@ -105,9 +101,10 @@ function NewChatForm () {
     setOpen(false);
   };
 
+
   const handleSave = useCallback((e) => {
     e.preventDefault();
-    dispatch(addChat(title));
+    dispatch(addChatToDB(title));
     setTitle('');
     setPersonName([]);
     handleClose();

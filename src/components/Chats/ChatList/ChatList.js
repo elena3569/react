@@ -1,4 +1,6 @@
 import React from 'react';
+import firebase from 'firebase'
+import { addChat } from '../../../store/actions/chats'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams, useHistory } from 'react-router'
@@ -8,7 +10,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { deleteChat } from '../../../store/actions/chats'
+import { deleteChat, subscribeOnChatChanges } from '../../../store/actions/chats'
 import NewChatForm from '../NewChatForm/NewChatForm'
 
 const useStyles = makeStyles((theme) => ({
@@ -49,7 +51,24 @@ function ChatList () {
       history.push('/chats')
     }
     dispatch(deleteChat(event.currentTarget.id))
-  }, [params, dispatch, history])
+  }, [dispatch, params, history])
+
+  React.useEffect(() => {
+    firebase
+        .database()
+        .ref('chats')
+        .on('child_added', (snapshot) => {
+          dispatch(addChat(snapshot.key, snapshot.val()));
+        })
+  
+    firebase
+        .database()
+        .ref('chats')
+        .on('child_changed', snapshot => {
+          dispatch(addChat(snapshot.key,snapshot.val()));
+        })
+
+  }, [])
 
     return (
         <div className={classes.root}>

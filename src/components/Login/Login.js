@@ -110,23 +110,23 @@ export default function Login() {
             
     }
     
-    const addUserToDB = (uid) => {
-        console.log(uid);
-        firebase.database().ref('uid').child(uid).set({
-                    email: email,
-                    name: name,
-                    age: age
-                })
-    }
+    // const addUserToDB = (uid) => {
+    //     console.log(uid);
+    //     firebase.database().ref('uid').child(uid).set({
+    //                 email: email,
+    //                 name: name,
+    //                 age: age
+    //             })
+    // }
         
     const handleSignUp = async () => {
         try{
             await firebase.auth().createUserWithEmailAndPassword(email, password)
             firebase.auth().onAuthStateChanged((user) => {
-                if (user) {
-                    dispatch(changeIsAuthed(Boolean(user)))
-                    addUserToDB(user.uid)
-                }
+                dispatch(changeIsAuthed(Boolean(user)))
+                // if (user) {
+                //     addUserToDB(user.uid)
+                // }
             })
         } catch (error) {
             dispatch(setName(''))

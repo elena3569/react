@@ -11,8 +11,8 @@ import {
 } from "@material-ui/pickers";
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles';
-import { setName, setAge } from '../../store/actions/profile'
-import { changeIsAuthed } from '../../store/actions/profile';
+// import { setName, setAge } from '../../store/actions/profile'
+// import { changeIsAuthed } from '../../store/actions/profile';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -68,22 +68,24 @@ function a11yProps(index) {
 
 export default function Login() {
     const classes = useStyles()
-    const dispatch = useDispatch()
-    const {age, name, isAuthed } = useSelector(state => state.profile)
+    // const dispatch = useDispatch()
+    const { isAuthed } = useSelector(state => state.profile)
     const [value, setValue] = React.useState(0)
     const [email, setEmail] = React.useState('')
+    const [name, setName] = React.useState('')
     const [error, setError] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
-    var uid = ''
+    const [age, setAge] = React.useState(0);
+    // var uid = ''
     
-    const handleChangeTab = (e, newValue) => setValue(newValue)
-    const handleChangeName = (e) => dispatch(setName(e.target.value))
+    const handleChangeTab = (newValue) => setValue(newValue)
+    const handleChangeName = (e) => setName(e.target.value)
     const handleChangeEmail = (e) => setEmail(e.target.value)
     const handleChangePassword = (e) => setPassword(e.target.value)
     const handleChangeAge = (date) => {
         setSelectedDate(date)
-        dispatch(setAge(`${formatDistance(new Date(), date)}`));
+        setAge(`${formatDistance(new Date(), date)}`);
     }
     const handleSubmitSignIn = async () => {
         if (!email || !password) {
@@ -102,7 +104,7 @@ export default function Login() {
 
     const handleSubmit = () => {
 
-        if (Boolean(email) & Boolean(password) & Boolean(age) & Boolean(name)) {
+        if (Boolean(email) & Boolean(password) & Boolean(selectedDate) & Boolean(name)) {
             handleSignUp()
             return
         } 
@@ -122,15 +124,15 @@ export default function Login() {
     const handleSignUp = async () => {
         try{
             await firebase.auth().createUserWithEmailAndPassword(email, password)
-            firebase.auth().onAuthStateChanged((user) => {
-                dispatch(changeIsAuthed(Boolean(user)))
-                // if (user) {
-                //     addUserToDB(user.uid)
-                // }
-            })
+            // firebase.auth().onAuthStateChanged((user) => {
+            //     dispatch(changeIsAuthed(Boolean(user)))
+            //     // if (user) {
+            //     //     addUserToDB(user.uid)
+            //     // }
+            // })
         } catch (error) {
-            dispatch(setName(''))
-            dispatch(setAge(''))
+            setName('')
+            // setAge('')
             setError(error.message)
         }
         setPassword('')

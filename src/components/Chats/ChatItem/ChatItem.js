@@ -41,29 +41,21 @@ function ChatItem () {
     const input = React.createRef();
 
     
-    useEffect(() => {
-      if (params.chatId) {
-        firebase
-        .database()
-        .ref('messages')
-        .child(params.chatId)
-        .on('child_added', (snapshot) => {
-          dispatch(addMessagetoStore(params.chatId, snapshot.val(), snapshot.key))
-        })
-        
-        // firebase
-        // .database()
-        //     .ref('messages')
-        //     .child(params.chatId)
-        //     .on('child_changed', (snapshot) => {
-        //   dispatch(addMessagetoStore(params.chatId, snapshot.val(), snapshot.key))
-        // })
+    // useEffect(() => {
+    //   if (params.chatId) {
+    //     firebase
+    //     .database()
+    //     .ref('messages')
+    //     .child(params.chatId)
+    //     .on('child_added', (snapshot) => {
+    //       dispatch(addMessagetoStore(params.chatId, snapshot.val(), snapshot.key))
+    //     })
 
-      }
-    }, [params.chatId])
+    //   }
+    // }, [params.chatId])
     
     const chat = useMemo(()=> {
-      return chats.find(chat => chat.id === params.chatId)
+      return chats?.find(chat => chat.id === params.chatId)
     }, [params.chatId, chats]);
 
     const handleMessage = (e) => {
@@ -87,6 +79,7 @@ function ChatItem () {
               
                 <div className='form'>
                 <TextField
+                  id='input'
                   className='input'
                   inputRef = {input}
                   multiline
@@ -95,7 +88,7 @@ function ChatItem () {
                   autoFocus 
                   value={message} 
                   onChange={handleMessage}/>
-                <Button className={classes.btn} type='submit' variant='contained' color='primary' 
+                <Button className={classes.btn} id='button' type='submit' variant='contained' color='primary' 
                   onClick={handleMessageList}><SendRoundedIcon className={classes.labelBtn} /></Button>
               </div>
           </div>
